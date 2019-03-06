@@ -1,0 +1,176 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Populating the interactive namespace from numpy and matplotlib\n",
+      "((60000, 28, 28), (60000,))\n",
+      "((10000, 28, 28), (10000,))\n"
+     ]
+    }
+   ],
+   "source": [
+    "%pylab inline\n",
+    "import itertools\n",
+    "\n",
+    "arc = load('mnist.npz')\n",
+    "x_train = arc['arr_0']\n",
+    "y_train = arc['arr_1']\n",
+    "x_test  = arc['arr_2']\n",
+    "y_test  = arc['arr_3']\n",
+    "print(x_train.shape, y_train.shape)\n",
+    "print(x_test.shape, y_test.shape)\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Show image number 15, and write in the title what digit it should correspond to\n",
+    "N=15\n",
+    "imshow(x_train[N], cmap='gray_r')\n",
+    "_ = title('Hand written digit '+str(y_train[N]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def Dinfty(a,b):\n",
+    "    Dinfty = max(a,b).abs(a-b)\n",
+    "    return Dinfty\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def D1(a,b):\n",
+    "    D1 = sum(a,b).abs(b-a)\n",
+    "    return D1 "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def D2(a,b):\n",
+    "    D2 = sum(a,b).np.sqrt(abs(b-a)**2)\n",
+    "    return D2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def distmatrix(N, dist, x_train):\n",
+    "    D = np.zeros((N,N))\n",
+    "    for i, j in itertools.product(xrange(N), xrange(i,N)):\n",
+    "        D[i][j] = dist(x_train[i], x_train[j])\n",
+    "        D[j][i] = D[i][j]\n",
+    "    return D        "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "execution_count": 41,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "\n",
+    "Dinfty(28,30)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "272.0"
+      ]
+     },
+     "execution_count": 46,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "D2(28,300)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.15"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
