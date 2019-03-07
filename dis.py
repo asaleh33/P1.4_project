@@ -5,7 +5,7 @@ def Dinfty(a,b):
     '''
     dinfty
     '''
-    return abs(a,b).max(0,1)
+    return np.max(abs(a-b))
 
 def D1(a,b):
     '''
